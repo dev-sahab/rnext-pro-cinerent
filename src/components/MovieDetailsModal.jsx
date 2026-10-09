@@ -1,6 +1,6 @@
 import { GetImageURL } from '../utils/utils';
 
-export default function MovieDetailsModal({ onClose, movie }) {
+export default function MovieDetailsModal({ onClose, movie, onCartAdd }) {
   return (
     <>
       <div className="fixed top-0 left-0 w-screen h-screen z-50 bg-black/60 backdrop-blur-sm ">
@@ -26,6 +26,7 @@ export default function MovieDetailsModal({ onClose, movie }) {
               </p>
               <div className="grid lg:grid-cols-2 gap-2">
                 <a
+                  onClick={(e) => onCartAdd(e, movie)}
                   className="bg-primary rounded-lg py-2 px-5 flex items-center justify-center gap-2 text-[#171923] font-semibold text-sm"
                   href="#"
                 >

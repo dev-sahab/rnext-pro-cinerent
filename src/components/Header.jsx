@@ -1,9 +1,18 @@
+import { useContext, useState } from 'react';
+import Moon from '../assets/icons/moon.svg';
 import Logo from '../assets/logo.svg';
 import Ring from '../assets/ring.svg';
-import Moon from '../assets/icons/moon.svg';
 import ShoppingCart from '../assets/shopping-cart.svg';
+import { MovieContext } from '../context';
+import MiniCart from './MiniCart';
 
 export default function Header() {
+  const { cartData } = useContext(MovieContext);
+
+  const [showCartModal, setShowCartModal] = useState(false);
+  const handleOpenCartModal = () => {
+    setShowCartModal(true);
+  };
   return (
     <>
       {/* <!-- Begin header --> */}
@@ -32,15 +41,25 @@ export default function Header() {
             </li>
             <li>
               <a
+                onClick={handleOpenCartModal}
                 className="bg-primary/20 dark:bg-primary/[7%] rounded-lg backdrop-blur-[2px] p-1 inline-block"
                 href="#"
               >
                 <img src={ShoppingCart} width="24" height="24" alt="" />
+                {cartData.length > 0 && (
+                  <span className="bg-[#00d991] text-white text-[10px] rounded-full w-[16px] h-[16px] flex items-center justify-center p-2 absolute -top-2 -right-2">
+                    {cartData.length}
+                  </span>
+                )}
               </a>
             </li>
           </ul>
         </nav>
+        {showCartModal && (
+          <MiniCart onClose={() => setShowCartModal(false)} movie={cartData} />
+        )}
       </header>
+
       {/* <!-- End Header --> */}
     </>
   );

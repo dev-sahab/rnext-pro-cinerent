@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { MovieContext } from '../context';
 import { GetImageURL } from '../utils/utils';
 import AddToCart from './AddToCart';
 import MovieDetailsModal from './MovieDetailsModal';
@@ -13,6 +14,19 @@ export default function MovieCard({ data }) {
   const handleCloseModal = () => {
     setActiveMovieData(null);
     setShowModal(false);
+  };
+
+  const { cartData, setCartData } = useContext(MovieContext);
+
+  const handleAddToCart = (e, movie) => {
+    e.preventDefault();
+    const find = cartData.find((item) => item.id === movie.id);
+    if (find) {
+      alert('Movie already in cart');
+      return;
+    }
+
+    setCartData([...cartData, movie]);
   };
 
   return (
@@ -33,11 +47,15 @@ export default function MovieCard({ data }) {
           </figcaption>
         </a>
 
-        <AddToCart price={data.price} />
+        <AddToCart movie={data} onCartAdd={handleAddToCart} />
       </figure>
       {/* <!-- End Card --> */}
       {showModal && (
-        <MovieDetailsModal onClose={handleCloseModal} movie={activeMovieData} />
+        <MovieDetailsModal
+          onClose={handleCloseModal}
+          movie={activeMovieData}
+          onCartAdd={handleAddToCart}
+        />
       )}
     </>
   );
